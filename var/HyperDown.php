@@ -1,7 +1,4 @@
 <?php
-/* namespace HyperDown;
-* 去除了命名空间
-* /
 /**
  * Parser 修改为 HyperDown
  * 类名 class Parser 为class HyperDown
