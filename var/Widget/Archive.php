@@ -218,7 +218,8 @@ class Widget_Archive extends Widget_Abstract_Contents
         $this->parameter->setDefault(array(
             'pageSize'          =>  $this->options->pageSize,
             'type'              =>  NULL,
-            'checkPermalink'    =>  true
+            'checkPermalink'    =>  true,
+            'preview'           =>  false
         ));
 
         /** 用于判断是路由调用还是外部调用 */
@@ -775,12 +776,12 @@ class Widget_Archive extends Widget_Abstract_Contents
         }
 
         /** 匹配缩略名 */
-        if (isset($this->request->slug)) {
+        if (isset($this->request->slug) && !$this->parameter->preview) {
             $select->where('table.contents.slug = ?', $this->request->slug);
         }
 
         /** 匹配时间 */
-        if (isset($this->request->year)) {
+        if (isset($this->request->year) && !$this->parameter->preview) {
             $year = $this->request->filter('int')->year;
 
             $fromMonth = 1;
@@ -809,9 +810,12 @@ class Widget_Archive extends Widget_Abstract_Contents
         }
 
         /** 保存密码至cookie */
-        if ($this->request->isPost() && isset($this->request->protectPassword)) {
+        if ($this->request->isPost()
+            && isset($this->request->protectPassword)
+            && isset($this->request->protectCID)
+            && !$this->parameter->preview) {
             $this->security->protect();
-            Typecho_Cookie::set('protectPassword', $this->request->protectPassword, 0);
+            Typecho_Cookie::set('protectPassword_' . $this->request->filter('int')->protectCID, $this->request->protectPassword, 0);
         }
 
         /** 匹配类型 */
@@ -819,8 +823,8 @@ class Widget_Archive extends Widget_Abstract_Contents
         $this->query($select);
 
         if (!$this->have() 
-            || (isset($this->request->category) && $this->category != $this->request->category)
-            || (isset($this->request->directory) && $this->request->directory != implode('/', $this->directory))) {
+            || (isset($this->request->category) && $this->category != $this->request->category && !$this->parameter->preview)
+            || (isset($this->request->directory) && $this->request->directory != implode('/', $this->directory) && !$this->parameter->preview)) {
             if (!$this->_invokeFromOutside) {
                 /** 对没有索引情况下的判断 */
                 throw new Typecho_Widget_Exception(_t('请求的地址不存在'), 404);
@@ -860,7 +864,7 @@ class Widget_Archive extends Widget_Abstract_Contents
         }
 
         /** 设置归档类型 */
-        $this->_archiveType = $this->type;
+        list($this->_archiveType) = explode('_', $this->type);
 
         /** 设置归档缩略名 */
         $this->_archiveSlug = ('post' == $this->type || 'attachment' == $this->type) ? $this->cid : $this->slug;
@@ -1185,7 +1189,7 @@ class Widget_Archive extends Widget_Abstract_Contents
             $searchQuery = '%' . str_replace(' ', '%', $keywords) . '%';
 
             /** 搜索无法进入隐私项保护归档 */
-            $select->where('table.contents.password IS NULL')
+            $select->where("table.contents.password IS NULL OR table.contents.password = ''")
             ->where('table.contents.title LIKE ? OR table.contents.text LIKE ?', $searchQuery, $searchQuery)
             ->where('table.contents.type = ?', 'post');
         }
@@ -1230,7 +1234,7 @@ class Widget_Archive extends Widget_Abstract_Contents
         if ($this->_invokeByFeed) {
             // 对feed输出加入限制条件
             return parent::select()->where('table.contents.allowFeed = ?', 1)
-            ->where('table.contents.password IS NULL');
+            ->where("table.contents.password IS NULL OR table.contents.password = ''");
         } else {
             return parent::select();
         }
@@ -1333,24 +1337,28 @@ class Widget_Archive extends Widget_Abstract_Contents
 
         /** 定时发布功能 */
         if (!$selectPlugged) {
-            if ('post' == $this->parameter->type || 'page' == $this->parameter->type) {
-                if ($this->user->hasLogin()) {
-                    $select = $this->select()->where('table.contents.status = ? OR table.contents.status = ? OR
+            if ($this->parameter->preview) {
+                $select = $this->select();
+            } else {
+                if ('post' == $this->parameter->type || 'page' == $this->parameter->type) {
+                    if ($this->user->hasLogin()) {
+                        $select = $this->select()->where('table.contents.status = ? OR table.contents.status = ? OR
                             (table.contents.status = ? AND table.contents.authorId = ?)',
                             'publish', 'hidden', 'private', $this->user->uid);
-                } else {
-                    $select = $this->select()->where('table.contents.status = ? OR table.contents.status = ?',
+                    } else {
+                        $select = $this->select()->where('table.contents.status = ? OR table.contents.status = ?',
                             'publish', 'hidden');
-                }
-            } else {
-                if ($this->user->hasLogin()) {
-                    $select = $this->select()->where('table.contents.status = ? OR
-                            (table.contents.status = ? AND table.contents.authorId = ?)', 'publish', 'private', $this->user->uid);
+                    }
                 } else {
-                    $select = $this->select()->where('table.contents.status = ?', 'publish');
+                    if ($this->user->hasLogin()) {
+                        $select = $this->select()->where('table.contents.status = ? OR
+                            (table.contents.status = ? AND table.contents.authorId = ?)', 'publish', 'private', $this->user->uid);
+                    } else {
+                        $select = $this->select()->where('table.contents.status = ?', 'publish');
+                    }
                 }
+                $select->where('table.contents.created < ?', $this->options->time);
             }
-            $select->where('table.contents.created < ?', $this->options->time);
         }
 
         /** handle初始化 */
@@ -1361,7 +1369,7 @@ class Widget_Archive extends Widget_Abstract_Contents
         $this->_feedRssUrl = $this->options->feedRssUrl;
         $this->_feedAtomUrl = $this->options->feedAtomUrl;
         $this->_keywords = $this->options->keywords;
-        $this->_description = $this->options->description; 
+        $this->_description = $this->options->description;
 
         if (isset($handles[$this->parameter->type])) {
             $handle = $handles[$this->parameter->type];
@@ -1369,10 +1377,11 @@ class Widget_Archive extends Widget_Abstract_Contents
         } else {
             $hasPushed = $this->pluginHandle()->handle($this->parameter->type, $this, $select);
         }
-        
+
         /** 初始化皮肤函数 */
         $functionsFile = $this->_themeDir . 'functions.php';
-        if ((!$this->_invokeFromOutside || $this->parameter->type == 404) && file_exists($functionsFile)) {
+        if ((!$this->_invokeFromOutside || $this->parameter->type == 404 || $this->parameter->preview)
+            && file_exists($functionsFile)) {
             require_once $functionsFile;
             if (function_exists('themeInit')) {
                 themeInit($this);
@@ -1544,7 +1553,7 @@ class Widget_Archive extends Widget_Abstract_Contents
             $this->created, $this->options->time)
             ->where('table.contents.status = ?', 'publish')
             ->where('table.contents.type = ?', $this->type)
-            ->where('table.contents.password IS NULL')
+            ->where("table.contents.password IS NULL OR table.contents.password = ''")
             ->order('table.contents.created', Typecho_Db::SORT_ASC)
             ->limit(1));
 
@@ -1581,7 +1590,7 @@ class Widget_Archive extends Widget_Abstract_Contents
         $content = $this->db->fetchRow($this->select()->where('table.contents.created < ?', $this->created)
             ->where('table.contents.status = ?', 'publish')
             ->where('table.contents.type = ?', $this->type)
-            ->where('table.contents.password IS NULL')
+            ->where("table.contents.password IS NULL OR table.contents.password = ''")
             ->order('table.contents.created', Typecho_Db::SORT_DESC)
             ->limit(1));
 
