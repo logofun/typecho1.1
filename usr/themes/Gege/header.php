@@ -2,9 +2,27 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <script src="<?php $this->options->themeUrl('js/jquery.min.js'); ?>"></script>
+
+<style>
+  .noshow{display: none!important;}
+</style>
+
+<?php if($this->options->jq_min_js_cdn):?><script src="<?php $this->options->jq_min_js_cnd(); ?>"></script><?php else:?><script src="<?php $this->options->themeUrl('js/jquery.min.js'); ?>"></script><?php endif;?>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        if (location.search=='?sm') {
+          $("#sidebar").addClass('noshow');
+        }
+      });
+    </script>
+<?php if($this->options->layzload_js_cdn):?><script src="<?php $this->options->layzload_js_cdn(); ?>"></script><?php else:?><script src="<?php $this->options->themeUrl('js/lazyload.js'); ?>"></script><?php endif;?>
+
+<?php if($this->options->layer_js_cdn):?><script src="<?php $this->options->layer_js_cdn(); ?>"></script><?php else:?><script src="<?php $this->options->themeUrl('js/layer/layer.js'); ?>"></script><?php endif;?>
+
+<!--     <script src="<?php $this->options->themeUrl('js/jquery.min.js'); ?>"></script>
     <script src="<?php $this->options->themeUrl('js/lazyload.js'); ?>"></script>
-    <script src="<?php $this->options->themeUrl('js/layer/layer.js'); ?>"></script>
+    <script src="<?php $this->options->themeUrl('js/layer/layer.js'); ?>"></script> -->
+    
     <script src="<?php $this->options->themeUrl('js/layopen.js'); ?>"></script>
     <meta charset="<?php $this->options->charset(); ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,7 +54,7 @@
 
 <body>
     <section class="section">
-      <section class="section-sidebar">
+      <section class="section-sidebar" id="sidebar">
         <div class="sidebar-header">
           <a href="<?php $this->options->siteUrl(); ?>" class="sidebar-header-logo">
             <?php if($this->options->logoUrl): ?>
@@ -51,9 +69,11 @@
                     <li><a<?php if($this->is('index')): ?> class="current"<?php endif; ?> href="<?php $this->options->siteUrl(); ?>"><?php _e('【 首页 】'); ?></a></li>
                     <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
                     <?php while($pages->next()): ?>
+                        <?php if(@in_array($pages->slug,$this->options->side_cate_show)): ?>
                         <li><a <?php if($this->is('page', $pages->slug)): ?> class="current"<?php endif; ?> 
                         href="<?php $pages->permalink(); ?>" title="<?php $pages->title(); ?>">
                         【 <?php $pages->title(); ?> 】</a></li>
+                        <?php endif;?>
                     <?php endwhile; ?>
         </ul>
 

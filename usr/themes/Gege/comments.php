@@ -6,7 +6,7 @@
 ?>
 <li id="li-<?php $comments->theId();?>" class="<?php echo $cl;?>">
 <div id="<?php $comments->theId(); ?>">
-<?php $a = 'https://gravatar.css.network/avatar/' . md5(strtolower($comments->mail)) . '?s=80&r=X&d=mm';?>
+<?php $a = 'https://s.gravatar.com/avatar/' . md5(strtolower($comments->mail)) . '?s=80';?>
     <img class="avatar" src="<?php echo $a ?>" alt="<?php echo $comments->author; ?>" />
     <div class="cp">
     <?php $comments->content(); ?>

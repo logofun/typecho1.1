@@ -1,7 +1,9 @@
 <?php
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
+// side_cate_show是一个数组，还需在没有选择时，即空数组的判断
+// 目前是用一个@在head.php中临时解决的，以避免空数组时的判断问题
 function themeConfig($form) {
-    $logoUrl = new Typecho_Widget_Helper_Form_Element_Text('logoUrl', NULL, NULL, _t('页头logo地址'), _t('一般为http://www.yourblog.com/image.png,支持 https:// 或 //,留空则使用站点名称'));
+    $logoUrl = new Typecho_Widget_Helper_Form_Element_Text('logoUrl', NULL, NULL,  _t('页头logo地址'), _t('一般为http://www.yourblog.com/image.png,支持 https:// 或 //,留空则使用站点名称'));
     $form->addInput($logoUrl->addRule('xssCheck', _t('请不要在图片链接中使用特殊字符')));
     $footerLogoUrl = new Typecho_Widget_Helper_Form_Element_Text('footerLogoUrl', NULL, NULL, _t('页尾logo地址'), _t('一般为http://www.yourblog.com/image.png,支持 https:// 或 //,留空则使用站点名称'));
     $form->addInput($footerLogoUrl->addRule('xssCheck', _t('请不要在图片链接中使用特殊字符')));
@@ -9,16 +11,38 @@ function themeConfig($form) {
     $form->addInput($favicon->addRule('xssCheck', _t('请不要在图片链接中使用特殊字符')));
     $searchPage = new Typecho_Widget_Helper_Form_Element_Text('searchPage', NULL, NULL, _t('搜索页地址'), _t('输入你的 Template Page of Search 的页面地址,记得带上 http:// 或 https://'));
     $form->addInput($searchPage->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
-   $default_thumb = new Typecho_Widget_Helper_Form_Element_Text('default_thumb', NULL, '', _t('默认缩略图'),_t('文章没有图片时的默认缩略图，留空则无，一般为http://www.yourblog.com/image.png'));
+    $default_thumb = new Typecho_Widget_Helper_Form_Element_Text('default_thumb', NULL, '', _t('默认缩略图'),_t('文章没有图片时的默认缩略图，留空则无，一般为http://www.yourblog.com/image.png'));
     $form->addInput($default_thumb->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
-    $jsAddress = new Typecho_Widget_Helper_Form_Element_Text('js_add', NULL, NULL, _t('js文件CDN替换前地址'), _t('即你的js文件存放链接，一般为http://www.yourblog.com/usr/themes/Gege/js/下的某处'));
-    $form->addInput($jsAddress->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
-    $jscdnAddress = new Typecho_Widget_Helper_Form_Element_Text('jscdn_add', NULL, NULL, _t('js文件CDN替换后地址'), _t('即你的七牛云存储域名，一般为http://yourblog.qiniudn.com/，可能也支持其他有镜像功能的CDN服务'));
-    $form->addInput($jscdnAddress->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
+    
+
+    //本主题使用了三个js，均可用cdn方式代替 
+    // jquery.min.js
+    $jqminAddress = new Typecho_Widget_Helper_Form_Element_Text('jq_min_js_cdn', NULL, NULL, _t('jquery.min.js文件CDN替换地址'), _t('本主题使用了jquery.min.js 1.12版，可使用新的cdn代替，如https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js,留空则使用本地js'));
+    $form->addInput($jqminAddress->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
+    // lazyload.js
+    $lazyjsAddress = new Typecho_Widget_Helper_Form_Element_Text('layzload_js_cdn', NULL, NULL, _t('lazyload.js文件CDN替换地址'), _t('本主题使用了lazyload.js，可使用新的cdn代替，如https://cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js,留空则使用本地js'));
+    $form->addInput($lazyjsAddress->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
+    // layer.js
+    $layerjsAddress = new Typecho_Widget_Helper_Form_Element_Text('layer_js_cdn', NULL, NULL, _t('layer.js文件CDN替换地址'), _t('本主题使用了layer.js，可使用新的cdn代替，如https://cdn.bootcss.com/layer/2.3/layer.js,留空则使用本地js'));
+    $form->addInput($layerjsAddress->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
+    
     $imgAddress = new Typecho_Widget_Helper_Form_Element_Text('img_add', NULL, NULL, _t('图片CDN替换前地址'), _t('即你的附件存放链接，一般为http://www.yourblog.com/usr/uploads/'));
     $form->addInput($imgAddress->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
     $imgcdnAddress = new Typecho_Widget_Helper_Form_Element_Text('imgcdn_add', NULL, NULL, _t('图片CDN替换后地址'), _t('即你的七牛云存储域名，一般为http://yourblog.qiniudn.com/，可能也支持其他有镜像功能的CDN服务'));
     $form->addInput($imgcdnAddress->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
+
+    $sideCateShow = new Typecho_Widget_Helper_Form_Element_Checkbox('side_cate_show',
+        // array('about' =>_t('关于页面') ,
+        //     'cate'=>_t('归档页面'),
+        //     'guestbook'=>_t('留言板页面')
+        //  ),
+        arrayPageList(),
+        // array('about','guestbook','search','cate'), 
+        arrayPageSlugList(), //这个是用于初始全选的，好象没作用，直接调用后台数据中的数组了
+        _t('侧边栏选择是否显示,勾选为显示')
+       
+    ); 
+    $form->addInput($sideCateShow->multiMode());
 }
 function themeInit($archive){
     Helper::options()->commentsMaxNestingLevels = 999;
@@ -38,49 +62,30 @@ function showimg($obj)
         echo $img;
     }
     if ($imgCount < 1) {
-        $img =$options->themeUrl('images/'.mt_rand(0,9).'.jpg');
-    return $img;}
-}
-function showThumb($obj,$size=null){
-    preg_match_all( "/\<img.*?src\=\"(.*?)\"[^>]*>/i", $obj->content, $matches );
-    $thumb = '';
-    $options = Typecho_Widget::widget('Widget_Options');
-    $attach = $obj->attachments(1)->attachment;
-    if (isset($attach->isImage) && $attach->isImage == 1){
-        $thumb = $attach->url;
-        // if(!empty($options->src_add) && !empty($options->cdn_add)){
-        //     $thumb = str_ireplace($options->src_add,$options->cdn_add,$thumb);
-        // }
-    }elseif(isset($matches[1][0])){
-        $thumb = $matches[1][0];
-        // if(!empty($options->src_add) && !empty($options->cdn_add)){
-        //     $thumb = str_ireplace($options->src_add,$options->cdn_add,$thumb);
-        // }
-    }
-    if(empty($thumb) && empty($options->default_thumb)){
-        $thumb = $options->themeUrl('images/'.mt_rand(0,9).'.jpg');
-    }else{
-        $thumb = empty($thumb) ? $options->default_thumb : $thumb;
-    }
-    return $thumb;
-}
-function parseFieldsThumb($obj){
-    $options = Typecho_Widget::widget('Widget_Options');
-    if(!empty($options->src_add) && !empty($options->cdn_add)){
-        $fieldsThumb = str_ireplace($options->src_add,$options->cdn_add,$obj->fields->thumb);
-        echo trim($fieldsThumb);
-    }else{
-        return $obj->fields->thumb();
+        $img =$options->themeUrl('images/'.mt_rand(0,24).'.jpg');
+    return $img;
     }
 }
-function parseContent($obj){
-    $options = Typecho_Widget::widget('Widget_Options');
-    if(!empty($options->src_add) && !empty($options->cdn_add)){
-        $obj->content = str_ireplace($options->src_add,$options->cdn_add,$obj->content);
+function arrayPageList(){
+    # code...获得page页，并生成数组
+    $pages = Typecho_Widget::widget('Widget_Contents_Page_List');
+    $arr = array();
+    while($pages->next()){
+        $arr[$pages->slug]=$pages->title;
     }
-    $obj->content = preg_replace("/<a href=\"([^\"]*)\">/i", "<a href=\"\\1\" target=\"_blank\">", $obj->content);
-    echo trim($obj->content);
+    return $arr;
 }
+function arrayPageSlugList(){
+    # code...获得page页的slug，并生成数组
+    $pages = Typecho_Widget::widget('Widget_Contents_Page_List');
+    $arr = array();
+    while($pages->next()){
+        $arr[]=$pages->slug;
+    }
+    return $arr;
+    
+}
+// 以下几个函数，是否需要，还在考虑中
 function getCommentAt($coid){
     $db   = Typecho_Db::get();
     $prow = $db->fetchRow($db->select('parent')
@@ -112,10 +117,7 @@ function getRecentPosts($obj,$pageSize){
         echo $output;
     }
 }
-function randBgIco(){
-    $bgIco=array('book','game','note','chat','code','image','web','link','design','lock');
-    return $bgIco[mt_rand(0,9)];
-}
+
 function randBgColor(){
     $bgColor=array('blue','purple','green','yellow','red','orange');
     return $bgColor[mt_rand(0,5)];
@@ -155,52 +157,4 @@ function thePrev($widget, $default = NULL){
     } else {
         echo $default;
     }
-}
-function compressHtml($html_source) {
-    $chunks = preg_split('/(<!--<nocompress>-->.*?<!--<\/nocompress>-->|<nocompress>.*?<\/nocompress>|<pre.*?\/pre>|<textarea.*?\/textarea>|<script.*?\/script>)/msi', $html_source, -1, PREG_SPLIT_DELIM_CAPTURE);
-    $compress = '';
-    foreach ($chunks as $c) {
-        if (strtolower(substr($c, 0, 19)) == '<!--<nocompress>-->') {
-            $c = substr($c, 19, strlen($c) - 19 - 20);
-            $compress .= $c;
-            continue;
-        } else if (strtolower(substr($c, 0, 12)) == '<nocompress>') {
-            $c = substr($c, 12, strlen($c) - 12 - 13);
-            $compress .= $c;
-            continue;
-        } else if (strtolower(substr($c, 0, 4)) == '<pre' || strtolower(substr($c, 0, 9)) == '<textarea') {
-            $compress .= $c;
-            continue;
-        } else if (strtolower(substr($c, 0, 7)) == '<script' && strpos($c, '//') != false && (strpos($c, "\r") !== false || strpos($c, "\n") !== false)) {
-            $tmps = preg_split('/(\r|\n)/ms', $c, -1, PREG_SPLIT_NO_EMPTY);
-            $c = '';
-            foreach ($tmps as $tmp) {
-                if (strpos($tmp, '//') !== false) {
-                    if (substr(trim($tmp), 0, 2) == '//') {
-                        continue;
-                    }
-                    $chars = preg_split('//', $tmp, -1, PREG_SPLIT_NO_EMPTY);
-                    $is_quot = $is_apos = false;
-                    foreach ($chars as $key => $char) {
-                        if ($char == '"' && $chars[$key - 1] != '\\' && !$is_apos) {
-                            $is_quot = !$is_quot;
-                        } else if ($char == '\'' && $chars[$key - 1] != '\\' && !$is_quot) {
-                            $is_apos = !$is_apos;
-                        } else if ($char == '/' && $chars[$key + 1] == '/' && !$is_quot && !$is_apos) {
-                            $tmp = substr($tmp, 0, $key);
-                            break;
-                        }
-                    }
-                }
-                $c .= $tmp;
-            }
-        }
-        $c = preg_replace('/[\\n\\r\\t]+/', ' ', $c);
-        $c = preg_replace('/\\s{2,}/', ' ', $c);
-        $c = preg_replace('/>\\s</', '> <', $c);
-        $c = preg_replace('/\\/\\*.*?\\*\\//i', '', $c);
-        $c = preg_replace('/<!--[^!]*-->/', '', $c);
-        $compress .= $c;
-    }
-    return $compress;
 }

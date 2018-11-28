@@ -1,9 +1,9 @@
+
  function dd(link){
 
 	var wd = document.body.clientWidth;
     		if (wd < '640') {
-      		//弹出一个iframe层
-			    layer.open({
+      		layer.open({
 	            type: 2,
 	            title: 'Welcome',
 	            maxmin: true,
@@ -12,8 +12,6 @@
 	            content: link
 	          	});
         	}else{
-      		//弹出一个iframe层
-      
         		layer.open({
 		        type: 2,
 		        title: 'Welcome',
@@ -25,3 +23,6 @@
         		});
       		}
 }
+
+
+

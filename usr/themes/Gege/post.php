@@ -12,7 +12,7 @@
   <?php $this->content(); ?>
   </div>
   <div class="content-post-meta post-meta-tags">
-    <?php $this->tags(' , ', true, 'none'); ?>
+    <?php $this->tags(' &#160; ', true, 'none'); ?>
   </div>
   <div class="content-post-author">
     <div class="tile">

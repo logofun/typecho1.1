@@ -1,0 +1,103 @@
+/*分类用css*/
+.archive-page {
+    padding: 40px 20px 40px;
+}
+.main-content {
+    position: relative;
+    max-width: 940px;
+    margin: 0 auto;
+    -webkit-animation: fade-in .5s;
+    animation: fade-in;
+    animation-duration: .5s;
+}
+.archive-page .categorys-title {
+    font-size: 16px;
+    position: relative;
+    margin: 10px auto;
+    padding: 0 30px;
+    color: #6fa3ef;
+}
+.archive-page .categorys-title a {
+    color: #5f5f5f;
+    font-weight: bold;
+}
+.archive-page .categorys-title::before {
+    position: absolute;
+    top: 0;
+    left: -15px;
+    padding: 0 30px;
+    content: '》';
+    color: #eb5055;
+}
+
+.post-lists {
+    position: relative;
+    display: block;
+    overflow: hidden;
+}
+.post-lists-body {
+    display: block;
+}
+.post-list-item {
+    float: left;
+    width: 33.3333%;
+    height: auto;
+    padding: 15px;
+    align-items: center;
+}
+.archive-page .post-list-item-container {
+    border: 1px solid rgba(184,197,214,.2);
+    border-radius: 3px;
+    background: #fff;
+    -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+.archive-page .post-list-item-container .item-label {
+    height: 95px;
+    background: #fff;
+}
+.archive-page .post-list-item-container .item-label .item-title a {
+    font-size: 14px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #313131;
+}
+
+.post-list-item-container .item-label {
+    position: relative;
+    height: 130px;
+    padding: 25px 20px 40px;
+    background-color: #fff;
+}
+.post-list-item-container .item-label .item-meta {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 0 15px 15px;
+    text-align: right;
+}
+.archive-page .post-list-item-container .item-label .item-meta .item-meta-date {
+    padding-bottom: 5px;
+    padding-left: 5px;
+    color: #5f5f5f;
+}
+.clearfix:after, .clearfix:before {
+    display: table;
+    content: '';
+}
+.clearfix {
+    zoom: 1;
+}
+.post-list-item-container .item-label .item-meta .item-meta-date {
+    font-size: 12px;
+    position: relative;
+    float: left;
+    padding-top: 9px;
+    padding-left: 9px;
+    text-align: right;
+    text-transform: none;
+    color: #f1f1f1;
+}

@@ -20,7 +20,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
       </a>
       <header class="card-header">
         <div class="card-title" >
-          <h1 id="<?php $this->slug()?>" class="post-title"><a href="javascript:dd('<?php $this->permalink() ?>')"><?php $this->title() ?></a></h1>
+          <h1 id="<?php $this->slug()?>" class="post-title"><a href="javascript:dd('<?php $this->permalink()?>?sm')"><?php $this->title() ?></a></h1>
         </div>
       </header>
       <section class="card-body">
