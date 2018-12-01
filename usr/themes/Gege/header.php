@@ -69,7 +69,7 @@
                     <li><a<?php if($this->is('index')): ?> class="current"<?php endif; ?> href="<?php $this->options->siteUrl(); ?>"><?php _e('【 首页 】'); ?></a></li>
                     <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
                     <?php while($pages->next()): ?>
-                        <?php if(@in_array($pages->slug,$this->options->side_cate_show)): ?>
+                        <?php if(@in_array($pages->slug,$this->options->side_page_show)): ?>
                         <li><a <?php if($this->is('page', $pages->slug)): ?> class="current"<?php endif; ?> 
                         href="<?php $pages->permalink(); ?>" title="<?php $pages->title(); ?>">
                         【 <?php $pages->title(); ?> 】</a></li>
@@ -80,7 +80,9 @@
         <ul class="nav hide-sm">
             <?php $this->widget('Widget_Metas_Category_List')->to($categories); ?>
             <?php while($categories->next()): ?>
-            <li><a href="<?php $categories->permalink(); ?>" rel="section">【 <?php $categories->name(); ?> 】</a></li>
+                <?php if(@in_array($categories->slug,$this->options->side_cate_show)): ?>
+               <li><a href="<?php $categories->permalink(); ?>" rel="section">【 <?php $categories->name(); ?> 】</a></li>
+                <?php endif;?>
             <?php endwhile; ?>
 
         

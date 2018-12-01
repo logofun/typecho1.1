@@ -1,6 +1,6 @@
 <?php
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
-// side_cate_show是一个数组，还需在没有选择时，即空数组的判断
+// side_cate_show|side_page_show 是一个数组，还需在没有选择时，增加空数组的判断
 // 目前是用一个@在head.php中临时解决的，以避免空数组时的判断问题
 function themeConfig($form) {
     $logoUrl = new Typecho_Widget_Helper_Form_Element_Text('logoUrl', NULL, NULL,  _t('页头logo地址'), _t('一般为http://www.yourblog.com/image.png,支持 https:// 或 //,留空则使用站点名称'));
@@ -31,7 +31,7 @@ function themeConfig($form) {
     $imgcdnAddress = new Typecho_Widget_Helper_Form_Element_Text('imgcdn_add', NULL, NULL, _t('图片CDN替换后地址'), _t('即你的七牛云存储域名，一般为http://yourblog.qiniudn.com/，可能也支持其他有镜像功能的CDN服务'));
     $form->addInput($imgcdnAddress->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
 
-    $sideCateShow = new Typecho_Widget_Helper_Form_Element_Checkbox('side_cate_show',
+    $sidePageShow = new Typecho_Widget_Helper_Form_Element_Checkbox('side_page_show',
         // array('about' =>_t('关于页面') ,
         //     'cate'=>_t('归档页面'),
         //     'guestbook'=>_t('留言板页面')
@@ -40,6 +40,14 @@ function themeConfig($form) {
         // array('about','guestbook','search','cate'), 
         arrayPageSlugList(), //这个是用于初始全选的，好象没作用，直接调用后台数据中的数组了
         _t('侧边栏选择是否显示,勾选为显示')
+       
+    ); 
+    $form->addInput($sidePageShow->multiMode());
+
+    $sideCateShow = new Typecho_Widget_Helper_Form_Element_Checkbox('side_cate_show',
+    arrayCateList(),
+    arrayCateSlugList(), //这个是用于初始全选的，好象没作用，直接调用后台数据中的数组了
+    _t('侧边栏选择是否显示,勾选为显示')
        
     ); 
     $form->addInput($sideCateShow->multiMode());
@@ -83,8 +91,28 @@ function arrayPageSlugList(){
         $arr[]=$pages->slug;
     }
     return $arr;
-    
 }
+function arrayCateList(){
+    # code...获得cate页，并生成数组
+    $cates = Typecho_Widget::widget('Widget_Metas_Category_List');
+    $arr = array();
+    while($cates->next()){
+        $arr[$cates->slug]=$cates->name;
+    }
+    return $arr;
+}
+function arrayCateSlugList(){
+    # code...获得cate页的slug，并生成数组
+    $cates = Typecho_Widget::widget('Widget_Metas_Category_List');
+    $arr = array();
+    while($cates->next()){
+        $arr[]=$cates->slug;
+    }
+    return $arr;
+}
+
+
+
 // 以下几个函数，是否需要，还在考虑中
 function getCommentAt($coid){
     $db   = Typecho_Db::get();
