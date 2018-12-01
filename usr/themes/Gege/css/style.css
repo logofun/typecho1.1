@@ -12,15 +12,15 @@ em{color: #999;text-decoration: underline;}
 .section-footer .text-red{color:#e06870}
 .sidebar-header{color:#999;-ms-flex:1 1 auto;flex:1 1 auto;padding:2rem 2rem 0rem 2rem;text-align:center;overflow-y: auto;}
 .sidebar-header .sidebar-header-logo{box-shadow:none;display:block;font-size:1.4rem;padding:1rem;text-decoration:none}
-.sidebar-header .sidebar-header-logo .logo{height:4.8rem}
+.sidebar-header .sidebar-header-logo .logo{height:4.8rem;border-radius: 50%;}
 .sidebar-header p{font-size:1.2rem;line-height:2rem}
 .sidebar-header .nav{border-top:.1rem solid #eee;list-style:none;margin:1rem 0;padding:0.5rem 0}
 .sidebar-header .nav:last-of-type{border-bottom:.1rem solid #eee}
 .sidebar-header .nav a{color:#666}
-.sidebar-footer{color:#ccc;-ms-flex:0 0 12rem;flex:0 0 12rem;font-size:1.2rem;height:12rem;padding:2rem;text-align:center;width:24rem}
+/*.sidebar-footer{color:#ccc;-ms-flex:0 0 12rem;flex:0 0 12rem;font-size:1.2rem;height:12rem;padding:2rem;text-align:center;width:24rem}
 .sidebar-footer a{color:#999}
 .sidebar-footer p{margin-bottom:0}
-.sidebar-footer .text-red{color:#e06870}
+.sidebar-footer .text-red{color:#e06870}*/
 .content-title{margin-top:2rem;padding:2rem 1rem 0 1rem}
 .content-title h2{font-size:2rem;margin-bottom:1rem}
 .content-cards{display:flex;display:-ms-flexbox;-ms-flex-wrap:wrap;flex-wrap:wrap;padding:15px 15px 0 0}
