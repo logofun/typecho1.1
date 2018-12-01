@@ -44,8 +44,8 @@
         <?php endif; ?>
         
     </title>
-    <link rel="stylesheet" href="<?php $this->options->themeUrl('css/style.css'); ?>">
-    <link rel="stylesheet" href="<?php $this->options->themeUrl('css/font-awesome.min.css'); ?>">
+    <link rel="stylesheet" href="<?php $this->options->themeUrl('css/style.css'); ?>?20181201">
+    <!-- <link rel="stylesheet" href="<?php $this->options->themeUrl('css/font-awesome.min.css'); ?>"> -->
 
 
     <?php $this->header(); ?> 
@@ -60,7 +60,7 @@
             <?php if($this->options->logoUrl): ?>
     <img class="logo" alt="<?php $this->options->title() ?>" src="<?php $this->options->logoUrl();?>"  />
             <?php else : ?>
-    <img class="logo" alt="<?php $this->options->title() ?>" src="<?php $this->options->themeUrl('affinity.png'); ?>" />
+    <img class="logo" alt="<?php $this->options->title() ?>" src="<?php $this->options->themeUrl('gege.png'); ?>" />
             <?php endif; ?>
             
           </a>

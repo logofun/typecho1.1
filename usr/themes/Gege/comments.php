@@ -35,10 +35,13 @@
     <?php else : ?>
         <div class="ainfo">
         <?php endif ; ?>
-        <div class="tbox">
-        <input type="text" name="author" id="author" class="ci" placeholder="称呼" value="<?php $this->remember('author'); ?>" required>
-        <input type="email" name="mail" id="mail" class="ci" placeholder="邮箱" value="<?php $this->remember('mail'); ?>" <?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>>
+        <div class="tbox" style="width: 50%;float: left;">
+        <input type="text" name="author" id="author" class="ci" placeholder="称呼 ｛英雄请留下姓名 | 留空是不能留言的啊}" value="<?php $this->remember('author'); ?>" required>
+        <input type="email" name="mail" id="mail" class="ci" oninput="showAva(this.value)" placeholder="邮箱 ｛调用Gravatar头像 | 留空或未注册则显示随机头像｝" value="<?php $this->remember('mail'); ?>" <?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>>
         <input type="url" name="url" id="url" class="ci" placeholder="网址" value="<?php $this->remember('url'); ?>" <?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?>>
+        </div>
+        <div id="showAvatar" style="float: left;width: 50%;text-align: center;margin: 0 auto;position: relative;padding-top: 10px;">
+            <span style="color: #999;">Gravatar图片显示区</span>
         </div>
         </div>
     <?php endif; ?>
@@ -47,3 +50,28 @@
 </form>
 </div>
 </div>
+
+<script type="text/javascript">
+//获取Gravatar头像
+function showAva(str) {
+    //实例化 XMLHttpRequest对象
+    if(window.XMLHttpRequest){
+        //非IE
+        var xhr = new XMLHttpRequest();
+    }else{
+        var xhr = new ActiveXobject('Microsoft.XMLHTTP');
+    }
+    //给xhr 绑定事件 检测请求的过程
+    xhr.onreadystatechange = function(){
+        //console.log(xhr.readyState);
+        //如果成功接收到响应
+        if(xhr.status == 200 && xhr.readyState == 4){
+            document.getElementById('showAvatar').innerHTML = xhr.responseText;
+        }
+    }
+    //进行请求的初始化
+    xhr.open('get', '../usr/themes/Gege/show_avatar.php?n1='+str, true);
+    //正式发送请求
+    xhr.send();
+}
+</script>
