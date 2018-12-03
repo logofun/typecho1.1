@@ -72,7 +72,7 @@ function showAva(str) {
         }
     }
     //进行请求的初始化
-    xhr.open('get', '../usr/themes/Gege/show_avatar.php?n1='+str, true);
+    xhr.open('get', "<?php $this->options->themeUrl('show_avatar.php'); ?>?n1="+str, true);
     //正式发送请求
     xhr.send();
 }
