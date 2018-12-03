@@ -1,5 +1,6 @@
 <?php
-	//传入邮箱地址
+if isset($_GET["n1"]){	
+//传入邮箱地址
 	$s1 = $_GET["n1"];
 	//md5转码
 	$mdmd5 = md5(strtolower(trim($s1)));
@@ -7,5 +8,5 @@
 	$avatar = 'https://s.gravatar.com/avatar/' . $mdmd5 . '?s=80';
 	//输出头像
 	echo "<img src='".$avatar."'>";
-
+}
 ?>
