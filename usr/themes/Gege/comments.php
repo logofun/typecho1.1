@@ -67,6 +67,8 @@ function showAva(str) {
         //如果成功接收到响应
         if( xhr.readyState == 4 && xhr.status == 200){
             document.getElementById('showAvatar').innerHTML = xhr.responseText;
+        }else{
+            document.getElementById('showAvatar').innerHTML ="";
         }
     }
     //进行请求的初始化
