@@ -65,7 +65,7 @@ function showAva(str) {
     xhr.onreadystatechange = function(){
         //console.log(xhr.readyState);
         //如果成功接收到响应
-        if(xhr.status == 200 && xhr.readyState == 4){
+        if( xhr.readyState == 4 && xhr.status == 200){
             document.getElementById('showAvatar').innerHTML = xhr.responseText;
         }
     }
