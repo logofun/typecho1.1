@@ -54,6 +54,9 @@
 <script type="text/javascript">
 //获取Gravatar头像
 function showAva(str) {
+
+    if (str.length>5) {
+
     //实例化 XMLHttpRequest对象
     if(window.XMLHttpRequest){
         //非IE
@@ -65,15 +68,15 @@ function showAva(str) {
     xhr.onreadystatechange = function(){
         //console.log(xhr.readyState);
         //如果成功接收到响应
-        if( xhr.readyState == 4 && xhr.status == 200){
+        if(xhr.status == 200 && xhr.readyState == 4){
             document.getElementById('showAvatar').innerHTML = xhr.responseText;
         }else{
             document.getElementById('showAvatar').innerHTML ="";
         }
     }
     //进行请求的初始化
-    xhr.open('get', "<?php $this->options->themeUrl('show_avatar.php'); ?>?n1="+str, true);
+    xhr.open('get', '<?php $this->options->themeUrl('show_avatar.php') ?>?n1='+str, true);
     //正式发送请求
-    xhr.send();
+    xhr.send();}
 }
 </script>
