@@ -66,7 +66,7 @@ em{color: #999;text-decoration: underline;}
 .content-post .toc ul ul{border-left:.1rem solid #dedede;padding-left:1em}
 .content-post .toc ul a{color:#666}
 .content-page .content-post-body{margin:4rem 0 0 0}
-.isso-postbox .textarea-wrapper{margin-bottom:1rem}
+/*.isso-postbox .textarea-wrapper{margin-bottom:1rem}
 .isso-postbox .textarea-wrapper .textarea{min-height:8em}
 .isso-postbox .auth-section .input-wrapper input,.isso-postbox .textarea-wrapper .textarea{background:#fafafa;border:.1rem solid #eee;border-radius:.2rem;padding:.6rem .8rem}
 .isso-postbox .auth-section .input-wrapper input:focus,.isso-postbox .textarea-wrapper .textarea:focus{border-color:#999;outline:0}
@@ -94,11 +94,11 @@ em{color: #999;text-decoration: underline;}
 .hljs-addition,.hljs-attribute,.hljs-bullet,.hljs-name,.hljs-string,.hljs-symbol,.hljs-template-tag,.hljs-template-variable,.hljs-title,.hljs-type,.hljs-variable{color:#f1fa8c}
 .hljs-comment,.hljs-deletion,.hljs-meta,.hljs-quote{color:#6272a4}
 .hljs-doctag,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-section,.hljs-selector-tag,.hljs-strong,.hljs-title,.hljs-type{font-weight:700}
-.hljs-emphasis{font-style:italic}
+.hljs-emphasis{font-style:italic}*/
 @media screen and (min-width:2048px){.content-cards .content-card{-ms-flex:0 0 12.5%;flex:0 0 12.5%;max-width:12.5%}
 }
 @media screen and (min-width:1600px){.section-sidebar{-ms-flex:0 0 350px;flex:0 0 350px;width:350px;}
-.section-footer{width:350px;}
+.section-footer{}
 .content-cards .content-card{-ms-flex:0 0 25%;flex:0 0 25%;max-width:25%}
 }
 @media screen and (max-width:1200px){.section-sidebar{-ms-flex:0 0 22rem;flex:0 0 22rem;width:22rem}
