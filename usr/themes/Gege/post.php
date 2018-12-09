@@ -21,10 +21,30 @@
           <img src="https://s.gravatar.com/avatar/c2217dc1e5f7466786f3b7a8b9283200?s=80" />
         </figure>
       </div>
+
+    <!-- 加入typed.min.js效果 -->
       <div class="tile-content">
         <p class="tile-title"><strong>LogoFun</strong></p>
-            <p class="tile-subtitle">一个非盈利性博客站点，主要发布一些自己收藏和一些自己的浅见而已。</p>
+        <span style="color:red;font-size:16px">【</span>
+            <span id="typed" class="tile-subtitle" style="color: blue"></span>
+        <span style="color:red;font-size:16px">】</span>
       </div>
+      <div id="typed-strings" style="display: none">
+        <p>一个非盈利性博客站点，主要发布一些自己收藏和一些自己的浅见而已。</p>
+      </div>
+<?php if($this->options->typed_js_cdn):?><script src="<?php $this->options->typed_js_cdn(); ?>"></script><?php else:?><script src="<?php $this->options->themeUrl('js/typed.min.js'); ?>"></script><?php endif;?>
+
+<script type="text/javascript">
+  var typed = new Typed("#typed", {
+            stringsElement: '#typed-strings',
+            typeSpeed: 150,
+            backDelay: 3000,
+            loop:true,
+            showCursor: false
+ 
+        });
+</script>
+      <!-- 加入typed.min.js -->
     </div>
   </div>
 

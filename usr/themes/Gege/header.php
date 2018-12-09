@@ -7,7 +7,7 @@
   .noshow{display: none!important;}
 </style>
 
-<?php if($this->options->jq_min_js_cdn):?><script src="<?php $this->options->jq_min_js_cnd(); ?>"></script><?php else:?><script src="<?php $this->options->themeUrl('js/jquery.min.js'); ?>"></script><?php endif;?>
+<?php if($this->options->jq_min_js_cdn):?><script src="<?php $this->options->jq_min_js_cdn(); ?>"></script><?php else:?><script src="<?php $this->options->themeUrl('js/jquery.min.js'); ?>"></script><?php endif;?>
     <script type="text/javascript">
       $(document).ready(function(){
         if (location.search=='?sm') {
@@ -19,10 +19,7 @@
 
 <?php if($this->options->layer_js_cdn):?><script src="<?php $this->options->layer_js_cdn(); ?>"></script><?php else:?><script src="<?php $this->options->themeUrl('js/layer/layer.js'); ?>"></script><?php endif;?>
 
-<!--     <script src="<?php $this->options->themeUrl('js/jquery.min.js'); ?>"></script>
-    <script src="<?php $this->options->themeUrl('js/lazyload.js'); ?>"></script>
-    <script src="<?php $this->options->themeUrl('js/layer/layer.js'); ?>"></script> -->
-    
+  
     <script src="<?php $this->options->themeUrl('js/layopen.js'); ?>"></script>
     <meta charset="<?php $this->options->charset(); ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -64,8 +61,9 @@
             <?php endif; ?>
             
           </a>
-          <p><?php $this->options->description() ?></p>
-          <ul class="nav">
+        <p><?php $this->options->description() ?></p>
+        
+        <ul class="nav">
                     <li><a<?php if($this->is('index')): ?> class="current"<?php endif; ?> href="<?php $this->options->siteUrl(); ?>"><?php _e('【 首页 】'); ?></a></li>
                     <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
                     <?php while($pages->next()): ?>
@@ -76,7 +74,9 @@
                         <?php endif;?>
                     <?php endwhile; ?>
         </ul>
+        
 
+        <?php if(@count($this->options->side_cate_show)>0): ?>
         <ul class="nav hide-sm">
             <?php $this->widget('Widget_Metas_Category_List')->to($categories); ?>
             <?php while($categories->next()): ?>
@@ -84,10 +84,9 @@
                <li><a href="<?php $categories->permalink(); ?>" rel="section">【 <?php $categories->name(); ?> 】</a></li>
                 <?php endif;?>
             <?php endwhile; ?>
-
-        
         </ul>
-
+        <?php endif; ?>
+                
         
         </div>
 <!--         <div class="sidebar-footer">

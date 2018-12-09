@@ -15,7 +15,7 @@ function themeConfig($form) {
     $form->addInput($default_thumb->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
     
 
-    //本主题使用了三个js，均可用cdn方式代替 
+    //本主题使用了4个js，均可用cdn方式代替 
     // jquery.min.js
     $jqminAddress = new Typecho_Widget_Helper_Form_Element_Text('jq_min_js_cdn', NULL, NULL, _t('jquery.min.js文件CDN替换地址'), _t('本主题使用了jquery.min.js 1.12版，可使用新的cdn代替，如https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js,留空则使用本地js'));
     $form->addInput($jqminAddress->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
@@ -25,11 +25,11 @@ function themeConfig($form) {
     // layer.js
     $layerjsAddress = new Typecho_Widget_Helper_Form_Element_Text('layer_js_cdn', NULL, NULL, _t('layer.js文件CDN替换地址'), _t('本主题使用了layer.js，可使用新的cdn代替，如https://cdn.bootcss.com/layer/2.3/layer.js,留空则使用本地js'));
     $form->addInput($layerjsAddress->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
-    
-    $imgAddress = new Typecho_Widget_Helper_Form_Element_Text('img_add', NULL, NULL, _t('图片CDN替换前地址'), _t('即你的附件存放链接，一般为http://www.yourblog.com/usr/uploads/'));
-    $form->addInput($imgAddress->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
-    $imgcdnAddress = new Typecho_Widget_Helper_Form_Element_Text('imgcdn_add', NULL, NULL, _t('图片CDN替换后地址'), _t('即你的七牛云存储域名，一般为http://yourblog.qiniudn.com/，可能也支持其他有镜像功能的CDN服务'));
-    $form->addInput($imgcdnAddress->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
+    // typed.js
+    $typedjsAddress = new Typecho_Widget_Helper_Form_Element_Text('typed_js_cdn', NULL, NULL, _t('typed.jsy文件 CDN替换地址'), _t('本主题在评论上方使用了typed.js，可使用新的cdn代替，如为https://cdn.bootcss.com/typed.js/2.0.9/typed.min.js,留空则使用本地js'));
+    $form->addInput($typedjsAddress->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
+
+
 
     $sidePageShow = new Typecho_Widget_Helper_Form_Element_Checkbox('side_page_show',
         // array('about' =>_t('关于页面') ,
